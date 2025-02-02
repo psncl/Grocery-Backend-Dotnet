@@ -1,6 +1,6 @@
 using System;
 
-namespace Models
+namespace Backend.Models
 {
     public class GroceryItem
     {
