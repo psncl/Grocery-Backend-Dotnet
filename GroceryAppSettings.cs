@@ -1,6 +1,11 @@
 namespace Backend;
-public class GroceryAppSettings
+public static class GroceryAppSettings
 {
-    public int PriceLoyaltyCard { get; set; }
-    public int DiscountLoyaltyCard { get; set; }
+    public static decimal PriceLoyaltyCard { get; set; }
+    public static decimal DiscountLoyaltyCard { get; set; }
+
+    public static decimal DiscountMultiplier()
+    {
+        return 1 - (DiscountLoyaltyCard / 100m);
+    }
 }

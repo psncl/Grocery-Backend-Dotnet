@@ -8,14 +8,12 @@ namespace Backend.Models
         public string Name { get; set; }
         public string BrandName { get; set; }
         public decimal Price { get; set; }
-        public bool IsPhysical { get; set; }
 
-        public GroceryItem(string name, string brandName, decimal price, bool isPhysical = true)
+        public GroceryItem(string name, string brandName, decimal price)
         {
             Name = name;
             BrandName = brandName;
             Price = price;
-            IsPhysical = isPhysical;
         }
 
         public decimal GetCost(int quantity)
