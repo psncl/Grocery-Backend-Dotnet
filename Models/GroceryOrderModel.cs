@@ -48,9 +48,15 @@ namespace Backend.Models
             if (IsLoyaltyMember)
             {
                 sum *= GroceryAppSettings.DiscountMultiplier();
+                sum += GroceryAppSettings.PriceLoyaltyCard;
             }
 
             return sum;
+        }
+
+        public void BuyLoyaltyMemberShip()
+        {
+            IsLoyaltyMember = true;
         }
     }
 }
