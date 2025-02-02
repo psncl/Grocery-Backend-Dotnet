@@ -36,11 +36,24 @@ namespace Backend.Models
             OrderedItems.Add(item, quantity);
         }
 
+        public Dictionary<GroceryItem, decimal> GetIndividualCosts()
+        {
+            var individualCosts = new Dictionary<GroceryItem, decimal>();
+
+            foreach (var entry in OrderedItems)
+            {
+                decimal cost = entry.Key.GetCost(entry.Value);
+                individualCosts.Add(entry.Key, cost);
+            }
+
+            return individualCosts;
+        }
+
         public decimal GetTotalCost()
         {
             decimal sum = 0;
 
-            foreach (KeyValuePair<GroceryItem, int> entry in OrderedItems)
+            foreach (var entry in OrderedItems)
             {
                 sum += entry.Key.GetCost(entry.Value);
             }
