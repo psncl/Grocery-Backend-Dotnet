@@ -1,5 +1,5 @@
 namespace Backend;
-public static class GroceryAppSettings
+public class GroceryAppSettings
 {
     public static decimal PriceLoyaltyCard { get; set; }
     public static decimal DiscountLoyaltyCard { get; set; }
