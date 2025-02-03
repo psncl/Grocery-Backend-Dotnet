@@ -42,7 +42,7 @@ namespace Backend.Models
 
             foreach (var entry in OrderedItems)
             {
-                decimal cost = entry.Key.GetCost(entry.Value);
+                decimal cost = entry.Key.GetCost(entry.Value); //Cost = Price * Quantity
                 individualCosts.Add(entry.Key, cost);
             }
 
