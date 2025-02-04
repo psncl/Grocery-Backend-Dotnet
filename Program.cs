@@ -20,17 +20,22 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapGet("/items", () =>
-{
-    //In real-world, we would asynchronously grab this data from a Grocery Items DB table.
-    List<GroceryItem> items = new()
+//In real-world, we would asynchronously grab this data from a Grocery Items DB table.
+List<GroceryItem> GroceryItemInventory = new()
     {
-        new GroceryItem("Milk", "The best of cows", 2.50m),
-        new GroceryItem("Bread", "Easy toast", 1.10m),
-        new GroceryItem("Eggs", "Wild chicken", 4.20m)
+        new("Milk", "The best of cows", 2.50m),
+        new("Bread", "Easy toast", 1.10m),
+        new("Eggs", "Wild chicken", 4.20m)
     };
 
-    return Results.Ok(items);
+app.MapGet("/items", () =>
+{
+    return Results.Ok(GroceryItemInventory);
+});
+
+app.MapPost("/placeorder", (List<GroceryItemAndPrice> itemsToOrder, ShippingInfo shippingInfo, bool loyaltyMember) =>
+{
+    return Results.Ok;
 });
 
 app.Run();
