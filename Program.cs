@@ -1,4 +1,5 @@
 using Backend;
+using Backend.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,17 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapGet("/items", () => "Hello World");
+app.MapGet("/items", () =>
+{
+    //In real-world, we would asynchronously grab this data from a Grocery Items DB table.
+    List<GroceryItem> items = new()
+    {
+        new GroceryItem("Milk", "The best of cows", 2.50m),
+        new GroceryItem("Bread", "Easy toast", 1.10m),
+        new GroceryItem("Eggs", "Wild chicken", 4.20m)
+    };
+
+    return Results.Ok(items);
+});
 
 app.Run();

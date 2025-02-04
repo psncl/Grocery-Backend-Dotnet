@@ -13,6 +13,16 @@ namespace Backend.Models
         public ShippingInfo ShippingAddress { get; set; }
         public bool IsLoyaltyMember { get; set; }
 
+        /* 
+        In a real-world application, I would save the applied discount
+        and cost of loyalty card in each order instance. Even if it leads
+        to duplicated data, it is important because these two rates may change in future.
+
+        EXAMPLE FIELDS:
+        public decimal DiscountApplied;
+        public decimal LoyaltyCardCost;
+        */
+
         public GroceryOrder(string orderNumber)
         {
             OrderNumber = orderNumber;
