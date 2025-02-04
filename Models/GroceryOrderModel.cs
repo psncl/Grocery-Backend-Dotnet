@@ -5,16 +5,18 @@ namespace Backend.Models
     public class GroceryOrder
     {
 
-        public string OrderNumber { get; set; }
+        //Private setter to ensure order number is only set during construction,
+        //and cannot be accidentally modified later on.
+        public uint OrderNumber { get; private set; }
 
         // Use a dictionary to store the item along with its quantity,
         // so that it is easy to deny adding an item twice.
-        public Dictionary<GroceryItem, int> OrderedItems { get; set; }
-        public ShippingInfo ShippingAddress { get; set; }
-        public bool IsLoyaltyMember { get; set; }
+        public Dictionary<GroceryItem, int> OrderedItems { get; private set; }
+        public ShippingInfo ShippingAddress { get; private set; }
+        private bool IsLoyaltyMember { get; set; }
 
         /* 
-        In a real-world application, I would save the applied discount
+        In a real-world application, we would save the applied discount
         and cost of loyalty card in each order instance. Even if it leads
         to duplicated data, it is important because these two rates may change in future.
 
@@ -23,7 +25,7 @@ namespace Backend.Models
         public decimal LoyaltyCardCost;
         */
 
-        public GroceryOrder(string orderNumber)
+        public GroceryOrder(uint orderNumber)
         {
             OrderNumber = orderNumber;
             OrderedItems = new();
@@ -75,6 +77,11 @@ namespace Backend.Models
             }
 
             return sum;
+        }
+
+        public void AddShippingAddress(ShippingInfo shippingAddress)
+        {
+            this.ShippingAddress = shippingAddress.DeepClone();
         }
 
         public void BuyLoyaltyMemberShip()
