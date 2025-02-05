@@ -33,9 +33,9 @@ app.MapGet("/items", () =>
     return Results.Ok(GroceryItemInventory);
 });
 
-app.MapPost("/placeorder", (List<GroceryItemAndPrice> itemsToOrder, ShippingInfo shippingInfo, bool loyaltyMember) =>
+app.MapPost("/placeorder", (PostGroceryOrderDTO order) =>
 {
-    return Results.Ok;
+    return Results.Created($"order created", order);
 });
 
 app.Run();
