@@ -62,6 +62,7 @@ app.MapPost("/placeorder", (PostGroceryOrderDTO order) =>
             if (item.Name == GroceryItemInventory[i].Name)
             {
                 foundItemIndex = i;
+                break;
             }
         }
         if (foundItemIndex == -1)
@@ -81,9 +82,14 @@ app.MapPost("/placeorder", (PostGroceryOrderDTO order) =>
     }
 
     //Thanks to the exception handling above, the following code will only reach if all items from the frontend were found to be valid.
-    AllPlacedOrders.Add(orderNumber, newOrder);
-    //TODO: Add shipping info and loyalty purchase
-    return Results.Created($"order created", newOrder);
+    newOrder.AddShippingAddress(order.ShippingInfo);
+    if (order.LoyaltyPurchase)
+    {
+        newOrder.BuyLoyaltyMemberShip();
+    }
+
+    AllPlacedOrders.Add(newOrder.OrderNumber, newOrder);
+    return Results.Created($"Order succesfully created.", newOrder.OrderNumber);
 });
 
 app.Run();
