@@ -11,9 +11,9 @@ namespace Backend.Models
 
         public GroceryItem(string name, string brandName, decimal price)
         {
-            Name = name;
-            BrandName = brandName;
-            Price = price;
+            this.Name = name;
+            this.BrandName = brandName;
+            this.Price = price;
         }
 
         public decimal GetCost(int quantity)

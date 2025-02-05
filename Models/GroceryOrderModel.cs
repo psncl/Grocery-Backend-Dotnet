@@ -27,10 +27,10 @@ namespace Backend.Models
 
         public GroceryOrder(uint orderNumber)
         {
-            OrderNumber = orderNumber;
-            OrderedItems = new();
-            ShippingAddress = new("", "", "");
-            IsLoyaltyMember = false;
+            this.OrderNumber = orderNumber;
+            this.OrderedItems = new();
+            this.ShippingAddress = new("", "", "");
+            this.IsLoyaltyMember = false;
         }
 
         public void AddItemToOrder(GroceryItem item, int quantity)
@@ -86,7 +86,7 @@ namespace Backend.Models
 
         public void BuyLoyaltyMemberShip()
         {
-            IsLoyaltyMember = true;
+            this.IsLoyaltyMember = true;
         }
     }
 }

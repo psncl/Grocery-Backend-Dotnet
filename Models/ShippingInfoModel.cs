@@ -10,9 +10,9 @@ namespace Backend.Models
 
         public ShippingInfo(string address, string postCode, string phoneNumber)
         {
-            Address = address;
-            PostCode = postCode;
-            PhoneNumber = phoneNumber;
+            this.Address = address;
+            this.PostCode = postCode;
+            this.PhoneNumber = phoneNumber;
         }
     }
 }

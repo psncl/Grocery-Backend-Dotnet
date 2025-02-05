@@ -9,7 +9,7 @@ namespace Backend.Models
     {
         public List<GroceryItemAndQty> ItemsToOrder { get; set; }
         public ShippingInfo ShippingInfo { get; set; }
-        public bool LoyaltyMember { get; set; }
+        public bool LoyaltyPurchase { get; set; }
 
         public PostGroceryOrderDTO()
         {

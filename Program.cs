@@ -28,6 +28,10 @@ List<GroceryItem> GroceryItemInventory = new()
         new("Eggs", "Wild chicken", 4.20m)
     };
 
+//Dictionary to hold order number mapped to an Order object.
+//This is similar to a factory design pattern. And it ensures order numbers are unique.
+Dictionary<uint, GroceryOrder> AllPlacedOrders = new();
+
 app.MapGet("/items", () =>
 {
     return Results.Ok(GroceryItemInventory);
@@ -35,7 +39,51 @@ app.MapGet("/items", () =>
 
 app.MapPost("/placeorder", (PostGroceryOrderDTO order) =>
 {
-    return Results.Created($"order created", order);
+    uint orderNumber = 0;
+    while (orderNumber == 0)
+    {
+        uint potentialOrderNumber = ExtensionMethods.GenerateRandomOrderNumber();
+        if (AllPlacedOrders.ContainsKey(potentialOrderNumber))
+        {
+            continue;
+        }
+        else
+        {
+            orderNumber = potentialOrderNumber;
+        }
+    }
+    var newOrder = new GroceryOrder(orderNumber);
+
+    foreach (var item in order.ItemsToOrder)
+    {
+        int foundItemIndex = -1;
+        for (int i = 0; i < GroceryItemInventory.Count; i++)
+        {
+            if (item.Name == GroceryItemInventory[i].Name)
+            {
+                foundItemIndex = i;
+            }
+        }
+        if (foundItemIndex == -1)
+        {
+            return Results.BadRequest($"{item.Name} is not a valid grocery item in the inventory.");
+        }
+
+        try
+        {
+            var itemToAdd = GroceryItemInventory[foundItemIndex];
+            newOrder.AddItemToOrder(itemToAdd, item.Quantity);
+        }
+        catch (Exception ex)
+        {
+            return Results.BadRequest($"Order Failed: {ex.Message}");
+        }
+    }
+
+    //Thanks to the exception handling above, the following code will only reach if all items from the frontend were found to be valid.
+    AllPlacedOrders.Add(orderNumber, newOrder);
+    //TODO: Add shipping info and loyalty purchase
+    return Results.Created($"order created", newOrder);
 });
 
 app.Run();
