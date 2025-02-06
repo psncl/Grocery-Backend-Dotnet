@@ -39,6 +39,11 @@ app.MapGet("/items", () =>
 
 app.MapGet("/order/{orderNumber}", (uint orderNumber) =>
 {
+    if (!AllPlacedOrders.ContainsKey(orderNumber))
+    {
+        return Results.NotFound($"Order number {orderNumber} does not exist.");
+    }
+
     return Results.Ok(AllPlacedOrders[orderNumber]);
 });
 
@@ -87,7 +92,15 @@ app.MapPost("/placeorder", (PostGroceryOrderDTO order) =>
     }
 
     //Thanks to the exception handling above, the following code will only reach if all items from the frontend were found to be valid.
-    newOrder.AddShippingAddress(order.ShippingInfo);
+    try
+    {
+        newOrder.AddShippingAddress(order.ShippingInfo);
+    }
+    catch (Exception ex)
+    {
+        return Results.BadRequest($"Order Failed: {ex.Message}");
+    }
+
     if (order.LoyaltyPurchase)
     {
         newOrder.BuyLoyaltyMemberShip();

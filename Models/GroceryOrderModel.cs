@@ -91,6 +91,10 @@ namespace Backend.Models
 
         public void AddShippingAddress(ShippingInfo shippingAddress)
         {
+            if (shippingAddress.Address == "" || shippingAddress.PostCode == "" || shippingAddress.PhoneNumber == "")
+            {
+                throw new ArgumentNullException($"No field in the shipping info must be empty.");
+            }
             this.ShippingAddress = shippingAddress.DeepClone();
         }
 
