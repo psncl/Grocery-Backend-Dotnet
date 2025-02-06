@@ -23,6 +23,13 @@ namespace Backend.Models
 
         public ShippingInfo ShippingAddress { get; private set; }
         private bool IsLoyaltyMember { get; set; }
+        public decimal TotalCost
+        {
+            get
+            {
+                return GetTotalCost();
+            }
+        }
 
         /* 
         In a real-world application, we would save the applied discount
