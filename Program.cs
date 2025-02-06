@@ -37,6 +37,11 @@ app.MapGet("/items", () =>
     return Results.Ok(GroceryItemInventory);
 });
 
+app.MapGet("/order/{orderNumber}", (uint orderNumber) =>
+{
+    return Results.Ok(AllPlacedOrders[orderNumber]);
+});
+
 app.MapPost("/placeorder", (PostGroceryOrderDTO order) =>
 {
     uint orderNumber = 0;

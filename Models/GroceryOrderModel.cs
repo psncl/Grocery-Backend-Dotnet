@@ -11,7 +11,16 @@ namespace Backend.Models
 
         // Use a dictionary to store the item along with its quantity,
         // so that it is easy to deny adding an item twice.
-        public Dictionary<GroceryItem, int> OrderedItems { get; private set; }
+        private Dictionary<GroceryItem, int> _OrderedItems { get; set; }
+
+        //The above dictionary gives a NotSupportedException on serializing.
+        //So the following data structure was employed as workaround. Source: https://stackoverflow.com/a/56351540
+        public List<KeyValuePair<GroceryItem, int>> OrderedItems
+        {
+            get { return _OrderedItems.ToList(); }
+            set { _OrderedItems = value.ToDictionary(x => x.Key, x => x.Value); }
+        }
+
         public ShippingInfo ShippingAddress { get; private set; }
         private bool IsLoyaltyMember { get; set; }
 
@@ -28,6 +37,7 @@ namespace Backend.Models
         public GroceryOrder(uint orderNumber)
         {
             this.OrderNumber = orderNumber;
+            this._OrderedItems = new();
             this.OrderedItems = new();
             this.ShippingAddress = new("", "", "");
             this.IsLoyaltyMember = false;
@@ -35,7 +45,7 @@ namespace Backend.Models
 
         public void AddItemToOrder(GroceryItem item, int quantity)
         {
-            if (OrderedItems.ContainsKey(item))
+            if (_OrderedItems.ContainsKey(item))
             {
                 throw new InvalidOperationException($"{item.Name} already exists in the order. Cannot add it again.");
             }
@@ -45,7 +55,7 @@ namespace Backend.Models
                 throw new ArgumentOutOfRangeException($"Quantity must be greater than 0. Provided value: {quantity}.");
             }
 
-            OrderedItems.Add(item, quantity);
+            _OrderedItems.Add(item, quantity);
         }
 
         public Dictionary<GroceryItem, decimal> GetIndividualCosts()
