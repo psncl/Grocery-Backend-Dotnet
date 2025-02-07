@@ -21,5 +21,20 @@ namespace Backend.Models
             return Price * quantity;
         }
 
+        public override bool Equals(object? obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+            var other = (GroceryItem)obj;
+
+            return this.Name == other.Name && this.BrandName == other.BrandName && this.Price == other.Price;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Name, BrandName, Price);
+        }
     }
 }

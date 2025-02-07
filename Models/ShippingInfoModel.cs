@@ -14,5 +14,21 @@ namespace Backend.Models
             this.PostCode = postCode;
             this.PhoneNumber = phoneNumber;
         }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+            var other = (ShippingInfo)obj;
+
+            return this.Address.ToLower().Equals(other.Address) && this.PostCode.ToLower().Equals(other.PostCode) && this.PhoneNumber.ToLower().Equals(other.PhoneNumber);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Address.ToLower(), PostCode.ToLower(), PhoneNumber.ToLower());
+        }
     }
 }
